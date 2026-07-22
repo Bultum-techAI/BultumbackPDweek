@@ -512,6 +512,49 @@ select.filter,.sel select{
   .q-bar-fill.over{background:var(--overdue,#a6322a)}
   .q-out{font-size:9.5px;color:var(--ink-soft);margin-top:4px;font-style:italic}
 
+
+  /* ---- name sign-in ---- */
+  .si-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;width:100%}
+  .si-label{font-size:12.5px;font-weight:600;color:#6e5d34}
+  #signInBar input{flex:0 1 170px;min-width:130px;padding:9px 12px;border:1px solid var(--cream-2);border-radius:9px;font-size:13.5px;background:#fffdf7;color:var(--ink)}
+  .si-btn{background:var(--evergreen);color:#fff;border:none;padding:9px 18px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer}
+  .si-btn:hover{background:var(--forest-2)}
+  .si-err{font-size:12px;color:var(--overdue,#a6322a);font-weight:600}
+  .si-who{font-size:13.5px;color:#6e5d34}
+  .si-who b{color:var(--evergreen);font-family:'Fraunces',serif}
+  .si-save{background:var(--gold);color:var(--evergreen);border:none;padding:8px 15px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer}
+  .si-save:hover{background:var(--gold-deep);color:#fff}
+  .si-out{background:none;border:1px solid var(--cream-2);color:#8a7746;padding:8px 14px;border-radius:9px;font-size:13px;cursor:pointer}
+  .si-out:hover{border-color:var(--overdue,#a6322a);color:var(--overdue,#a6322a)}
+  .adm-btns{margin-left:auto;display:flex;gap:8px}
+  .adm-btns button{margin-left:0}
+  .adm-report{background:var(--gold)!important;color:var(--evergreen)!important;font-weight:700}
+
+
+  /* ---- resources tab ---- */
+  .res-cat{margin-bottom:22px}
+  .res-cat-h{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--evergreen);border-bottom:2px solid var(--sage);padding-bottom:6px;margin:0 0 14px}
+  .res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .res-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px}
+  .res-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+  .res-card h4{font-family:'Fraunces',serif;font-size:16px;font-weight:600;margin:0 0 6px;color:var(--ink)}
+  .res-mine{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gold-deep);background:#f3e6c8;padding:2px 7px;border-radius:20px;vertical-align:middle;margin-left:4px}
+  .res-rm{background:none;border:none;color:var(--ink-soft);font-size:20px;line-height:1;cursor:pointer;padding:0 2px}
+  .res-rm:hover{color:var(--overdue,#a6322a)}
+  .res-what{font-size:13px;line-height:1.55;color:var(--ink);margin:0 0 10px}
+  .res-how{font-size:12.5px;line-height:1.55;color:var(--ink-soft);margin:0 0 10px}
+  .res-how b{color:var(--forest)}
+  .res-link a{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--forest);font-weight:600;text-decoration:none;word-break:break-all}
+  .res-link a:hover{text-decoration:underline}
+  .res-add{background:var(--cream);border:1px dashed var(--cream-2);border-radius:var(--radius);padding:16px 18px;margin-top:6px}
+  .res-add-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .res-add-row select,.res-add-row input{padding:9px 12px;border:1px solid var(--line);border-radius:9px;font-size:13px;background:#fff;color:var(--ink);font-family:inherit}
+  .res-add-row select{flex:0 0 auto}
+  .res-add-row input{flex:1 1 180px}
+  .res-add textarea{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:9px;font-size:13px;background:#fff;color:var(--ink);font-family:inherit;margin-bottom:10px}
+  .res-add-btn{background:var(--evergreen);color:#fff;border:none;padding:10px 18px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer}
+  .res-add-btn:hover{background:var(--forest-2)}
+
   /* ---- Save status + admin button in header ---- */
   .ts-header .ts-actions{margin-left:auto;display:flex;align-items:center;gap:14px}
   #saveStatus{font-size:11.5px;font-weight:600;color:#bcd2c6;font-family:'JetBrains Mono',monospace}
@@ -619,10 +662,20 @@ select.filter,.sel select{
       <h1 class="page-title">Teacher Center</h1>
       <p class="page-sub">Your hub for pre-service week: the full PD schedule, the trainings you must complete, and a step-by-step guide to your Tier 1 teaching license. Your name and license progress save privately on this device.</p>
 
-      <div class="name-bar">
-        <label for="teacherNameInput">Your name:</label>
-        <input type="text" id="teacherNameInput" placeholder="Type your name…" oninput="setTeacherName(this.value)">
-        <span class="hint">Saved only in this browser — used to keep your personal license checklist yours.</span>
+      <div class="name-bar" id="signInBar">
+        <div class="si-row" id="signedOut">
+          <span class="si-label">Sign in to save &amp; return to your work:</span>
+          <input type="text" id="firstName" placeholder="First name" onkeydown="if(event.key==='Enter')signIn()">
+          <input type="text" id="lastName" placeholder="Last name" onkeydown="if(event.key==='Enter')signIn()">
+          <button class="si-btn" onclick="signIn()">Sign in</button>
+          <span class="si-err" id="signInErr"></span>
+        </div>
+        <div class="si-row" id="signedIn" style="display:none">
+          <span class="si-who">Signed in as <b id="whoName"></b></span>
+          <button class="si-save" onclick="saveNow()">Save now</button>
+          <button class="si-out" onclick="signOut()">Sign out</button>
+          <span class="hint" style="width:100%">Your name is your login — sign in on any device to pick up where you left off.</span>
+        </div>
       </div>
 
       <div class="sub-tabs" id="teacherSubTabs">
@@ -632,6 +685,7 @@ select.filter,.sel select{
         <button data-sub="license">Tier 1 License</button>
         <button data-sub="mapping">Curriculum Mapping</button>
         <button data-sub="certificates">Video Certificates</button>
+        <button data-sub="resources">Resources</button>
       </div>
 
       <div class="sub-view on" id="sub-schedule"></div>
@@ -644,6 +698,7 @@ select.filter,.sel select{
         <div id="certCatalog"></div>
         <div id="certPlayerWrap" style="display:none"></div>
       </div>
+      <div class="sub-view" id="sub-resources"></div>
     </section>
 </main>
 
@@ -664,7 +719,7 @@ select.filter,.sel select{
 <!-- Admin portal -->
 <div id="adminView">
   <div class="adm-wrap">
-    <div class="adm-bar"><h1>Teacher Progress</h1><button onclick="closeAdmin()">Close admin</button></div>
+    <div class="adm-bar"><h1>Teacher Progress</h1><div class="adm-btns"><button class="adm-report" onclick="exportAdminPDF()">Download report (PDF)</button><button onclick="closeAdmin()">Close admin</button></div></div>
     <div class="adm-sub">Each teacher's setup completion and curriculum mapping progress.</div>
     <div id="adminBody"></div>
   </div>
@@ -905,6 +960,7 @@ function switchTeacherSub(sub){
   $("#sub-"+sub).classList.add('on');
   if(sub==='certificates'){ loadYT(); renderCertificates(); }
   if(sub==='mapping'){ renderMapping(); }
+  if(sub==='resources'){ renderResources(); }
 }
 function setTeacherName(v){ PERSONAL.name=v; savePersonalLocal(); maybeLoadFromCloud(); scheduleCloudSave(); }
 function setLicType(t){ PERSONAL.licenseType=t; savePersonal(); renderLicense(); }
@@ -1554,12 +1610,231 @@ function adminDetail(idx){
   el.style.display='block';
 }
 
+/* ===================== NAME SIGN-IN + EXPLICIT SAVE ===================== */
+// Normalize a name so the SAME person always maps to the SAME record
+// (trim, collapse spaces, Title Case) — this is the database key.
+function titleName(s){
+  return String(s||'').trim().replace(/\s+/g,' ').toLowerCase().replace(/\b\w/g, c=>c.toUpperCase());
+}
+function showSignedIn(){
+  const so=document.getElementById('signedOut'), si=document.getElementById('signedIn'), who=document.getElementById('whoName');
+  if(who) who.textContent = PERSONAL.name || '';
+  if(so) so.style.display = PERSONAL.name ? 'none' : 'flex';
+  if(si) si.style.display = PERSONAL.name ? 'flex' : 'none';
+}
+async function signIn(){
+  const fEl=document.getElementById('firstName'), lEl=document.getElementById('lastName'), err=document.getElementById('signInErr');
+  const f=titleName(fEl?fEl.value:''), l=titleName(lEl?lEl.value:'');
+  if(!f || !l){ if(err) err.textContent='Enter both first and last name.'; return; }
+  if(err) err.textContent='';
+  const name = f+' '+l;
+  setSaveStatus('saving');
+  // Pull this person's previous work (if any) so they pick up where they left off.
+  let remote=null;
+  if(cloudOn()) remote = await cloudLoad(name);
+  if(remote){
+    PERSONAL = Object.assign({name:name, licenseType:'renewal', checks:{}, map:{}}, remote, {name:name});
+  } else {
+    PERSONAL = {name:name, licenseType:(PERSONAL.licenseType||'renewal'), checks:{}, map:{}};
+  }
+  mapGrade   = PERSONAL.mapGrade   || 'K';
+  mapSubject = PERSONAL.mapSubject || 'Math';
+  savePersonalLocal();
+  showSignedIn();
+  renderTeacher();
+  if(teacherSub==='mapping') renderMapping();
+  // Ensure exactly one record exists for this name (upsert merges on the same name).
+  if(cloudOn()){ const ok=await cloudSave(name, PERSONAL); setSaveStatus(ok?'saved':'error'); }
+  else setSaveStatus('local');
+}
+async function saveNow(){
+  savePersonalLocal();
+  if(cloudOn() && PERSONAL.name){
+    setSaveStatus('saving');
+    const ok=await cloudSave(PERSONAL.name, PERSONAL);
+    setSaveStatus(ok?'saved':'error');
+  } else setSaveStatus(PERSONAL.name?'local':'noname');
+}
+async function signOut(){
+  // Flush any pending work to the cloud FIRST so nothing is lost, then
+  // clear this browser's session so the next teacher starts clean.
+  // (The cloud copy stays safe under their name.)
+  clearTimeout(cloudTimer);
+  if(cloudOn() && PERSONAL.name){ setSaveStatus('saving'); await cloudSave(PERSONAL.name, PERSONAL); }
+  PERSONAL = {name:'', licenseType:'renewal', checks:{}, map:{}};
+  mapGrade='K'; mapSubject='Math';
+  savePersonalLocal();
+  const f=document.getElementById('firstName'), l=document.getElementById('lastName');
+  if(f) f.value=''; if(l) l.value='';
+  showSignedIn();
+  renderTeacher();
+  if(teacherSub==='mapping') renderMapping();
+  setSaveStatus('noname');
+}
+
+/* ===================== ADMIN PDF REPORT ===================== */
+function exportAdminPDF(){
+  if(!window.jspdf){ alert('PDF library not loaded.'); return; }
+  const rows = window.__adminRows || [];
+  if(!rows.length){ alert('No teacher data to report yet.'); return; }
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'pt',format:'letter'});
+  const W=doc.internal.pageSize.getWidth(), H=doc.internal.pageSize.getHeight();
+  const M=48; let y=M;
+  function need(h){ if(y+h>H-M){ doc.addPage(); y=M; } }
+
+  doc.setFillColor(19,53,42); doc.rect(0,0,W,70,'F');
+  doc.setTextColor(199,154,60); doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.text('BULTUM ACADEMY',M,30);
+  doc.setTextColor(255,255,255); doc.setFontSize(15); doc.text('Curriculum Mapping & Setup — Progress Report', M, 52);
+  y=90;
+  doc.setTextColor(60,60,60); doc.setFont('helvetica','normal'); doc.setFontSize(10);
+  doc.text('Generated '+new Date().toLocaleString()+'   ·   '+rows.length+' teacher'+(rows.length>1?'s':''), M, y); y+=16;
+  doc.setDrawColor(210,210,210); doc.line(M,y,W-M,y); y+=20;
+
+  // roll-up totals
+  let tPlaced=0,tLessons=0,tPlans=0;
+  rows.forEach(r=>{ const s=progressSummary(r.data); tPlaced+=s.placed; tLessons+=s.lessons; tPlans+=s.plans; });
+  doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(19,53,42);
+  doc.text('School totals: '+tPlans+' plans  ·  '+tPlaced+' standards placed  ·  '+tLessons+' lessons planned', M, y); y+=20;
+
+  rows.forEach(r=>{
+    const s=progressSummary(r.data);
+    const when=r.updated_at?new Date(r.updated_at).toLocaleDateString():'';
+    const map=(r.data&&r.data.map)||{};
+    const keys=Object.keys(map).filter(k=>['Q1','Q2','Q3','Q4'].some(q=>(map[k][q]||[]).length));
+    need(44 + keys.length*13 + 12);
+    doc.setFont('helvetica','bold'); doc.setFontSize(13); doc.setTextColor(19,53,42);
+    doc.text(r.teacher_name||'(no name)', M, y);
+    doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(150,150,150);
+    doc.text('updated '+when, W-M, y, {align:'right'}); y+=15;
+    doc.setFontSize(9.5); doc.setTextColor(70,70,70);
+    doc.text(s.done+' setup items   ·   '+s.plans+' subject/grade plan(s)   ·   '+s.placed+' standards placed   ·   '+s.lessons+' lessons planned', M, y); y+=14;
+    if(keys.length){
+      keys.forEach(k=>{
+        const parts=k.split('|'); const subj=parts[0], grade=parts[1];
+        const per=QUARTERS.map(q=>q.id+' '+((map[k][q.id]||[]).length)).join('   ');
+        doc.setFontSize(9); doc.setTextColor(95,95,95);
+        doc.text('•  '+subj+' · '+(grade==='K'?'Kindergarten':'Grade '+grade)+'    ('+per+')', M+12, y); y+=13;
+      });
+    } else {
+      doc.setFont('helvetica','italic'); doc.setFontSize(9); doc.setTextColor(150,150,150);
+      doc.text('No curriculum plans started yet.', M+12, y); doc.setFont('helvetica','normal'); y+=13;
+    }
+    y+=8; doc.setDrawColor(232,232,232); doc.line(M,y-4,W-M,y-4); y+=8;
+  });
+
+  const pc=doc.internal.getNumberOfPages();
+  for(let i=1;i<=pc;i++){ doc.setPage(i); doc.setFontSize(8); doc.setTextColor(150,150,150); doc.text('Bultum Academy · Progress Report · '+i+'/'+pc, W/2, H-20, {align:'center'}); }
+  doc.save('Bultum_Progress_Report_'+new Date().toISOString().slice(0,10)+'.pdf');
+}
+
+/* ---- save-on-exit safety net: if the tab is closed/hidden mid-edit,
+       send the latest work with a keepalive request so it still lands ---- */
+function flushOnExit(){
+  try{
+    if(!cloudOn() || !PERSONAL.name) return;
+    fetch(SUPABASE_URL+"/rest/v1/"+CLOUD_TABLE, {
+      method:'POST', keepalive:true,
+      headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':'Bearer '+SUPABASE_ANON_KEY,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates,return=minimal'},
+      body: JSON.stringify({ teacher_name:PERSONAL.name, data:PERSONAL, updated_at:new Date().toISOString() })
+    });
+  }catch(e){}
+}
+window.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') flushOnExit(); });
+window.addEventListener('pagehide', flushOnExit);
+
+/* ===================== RESOURCES TAB ===================== */
+const RES_CATS = ['AI Tools','Curriculum & Content'];
+const RESOURCES = [
+  {
+    cat:'AI Tools',
+    name:'Claude for Teachers',
+    url:'https://claude.com/resources/tutorials/getting-started-with-claude-for-teachers',
+    what:'A free version of Claude (the AI assistant) built for K-12 teachers. It drafts standards-aligned lesson plans, differentiates a lesson for different reading levels and IEPs, builds quizzes and exit tickets with answer keys, and drafts family emails. It is grounded in academic standards for all 50 states and open curricula like OpenSciEd and Illustrative Mathematics, and connects to classroom tools such as MagicSchool, Diffit, Brisk, and Canva. It is for educators only (18+), and your data is not used to train the AI.',
+    signup:'Free for a full year for teachers who verify before June 30, 2027. 1) Go to claude.ai and sign in (or create an account) using your Bultum school email. 2) Open Claude for Teachers and click “Get verified.” 3) Confirm your school affiliation through Goodstack (a school ID or pay stub). Verification is usually under 24 hours (up to 3 days); you then get a confirmation email and your account upgrades automatically. (Higher-ed staff would use the separate “Claude for Education” program instead.)'
+  },
+  {
+    cat:'Curriculum & Content',
+    name:'Global Bright Futures',
+    url:'https://www.globalbrightfutures.org',
+    what:'A program offering structured, ready-made lessons across subjects, with strong STEM/science content — the area flagged as a need in staff meetings. Beyond lessons, they appear to provide materials and possibly funding. Lessons are organized by season (Fall / Winter / Spring), and the site has separate Educator and Family sections. The sample lesson we received covered K-2. Still being evaluated.',
+    signup:'Register on the site — you can register as a school. Each participant picks a season. Sharing idea: if teachers each choose a different season (and a different grade level), we can pool everything they are given — e.g., one K, one 1st, and one 2nd teacher each taking a different season gets us shared K-2 coverage with light adjustments. Note from our trial: after registering as a school there was no instant confirmation; an email reply took about 3 days. Reach out through the site or by email to set up a call to learn more.'
+  },
+  {
+    cat:'Curriculum & Content',
+    name:'Khan Academy',
+    url:'https://www.khanacademy.org',
+    what:'A free online learning platform covering math, science, reading, and more, with short instructional videos and auto-graded practice. Teachers can set up a class, assign content by skill or grade, and track student progress. It also includes Khanmigo, an AI teaching assistant for teachers.',
+    signup:'Go to khanacademy.org, create a free Teacher account, set up your class, and share the class link or join code with students. Free for teachers and students.'
+  }
+];
+
+function resCard(r, idx){
+  const clean = r.url ? esc(r.url).replace(/^https?:\/\//,'') : '';
+  const link = r.url ? `<div class="res-link"><a href="${esc(r.url)}" target="_blank" rel="noopener">${clean} ↗</a></div>` : '';
+  const rm = (idx!=null) ? `<button class="res-rm" title="Remove" onclick="removeResource(${idx})">&times;</button>` : '';
+  const mine = (idx!=null) ? `<span class="res-mine">added by you</span>` : '';
+  return `<div class="res-card">
+    <div class="res-top"><h4>${esc(r.name)} ${mine}</h4>${rm}</div>
+    ${r.what?`<p class="res-what">${esc(r.what)}</p>`:''}
+    ${r.signup?`<p class="res-how"><b>How to get started:</b> ${esc(r.signup)}</p>`:''}
+    ${link}
+  </div>`;
+}
+
+function renderResources(){
+  const host=document.getElementById('sub-resources'); if(!host) return;
+  const mine=(PERSONAL.resources||[]);
+  const cats=[]; RES_CATS.forEach(c=>cats.push(c)); mine.forEach(r=>{ if(!cats.includes(r.cat)) cats.push(r.cat); });
+  const sections=cats.map(cat=>{
+    const builtin=RESOURCES.filter(r=>r.cat===cat);
+    const added=mine.map((r,i)=>({r,i})).filter(x=>x.r.cat===cat);
+    if(!builtin.length && !added.length) return '';
+    const cards=builtin.map(r=>resCard(r,null)).concat(added.map(x=>resCard(x.r,x.i))).join('');
+    return `<div class="res-cat"><h3 class="res-cat-h">${esc(cat)}</h3><div class="res-grid">${cards}</div></div>`;
+  }).join('');
+  const catOpts=RES_CATS.concat(['Other']).map(c=>`<option>${esc(c)}</option>`).join('');
+  const addForm=`<div class="res-add">
+    <h3 class="res-cat-h">Add a resource</h3>
+    <p class="muted" style="font-size:12px;margin:-4px 0 10px">Anything you add is saved to your account and travels with you when you sign in on another device.</p>
+    <div class="res-add-row">
+      <select id="resCat">${catOpts}</select>
+      <input id="resName" type="text" placeholder="Resource name">
+      <input id="resUrl" type="url" placeholder="https://… (optional)">
+    </div>
+    <textarea id="resWhat" rows="2" placeholder="What it is and how it helps (optional)"></textarea>
+    <button class="res-add-btn" onclick="addResource()">Add resource</button>
+  </div>`;
+  host.innerHTML = `
+    <div class="callout" style="margin-bottom:16px"><div class="ci"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+      <div><h4>Teaching Resources</h4><p>Tools and programs to support instruction, grouped by type. Start with the AI tools, then curriculum and content. You can add your own at the bottom — those save to your account.</p></div></div>
+    ${sections}
+    ${addForm}`;
+}
+
+function addResource(){
+  const nameEl=document.getElementById('resName'); const name=(nameEl?nameEl.value:'').trim();
+  if(!name){ alert('Give the resource a name.'); return; }
+  const cat=(document.getElementById('resCat')||{}).value || 'Other';
+  const url=((document.getElementById('resUrl')||{}).value||'').trim();
+  const what=((document.getElementById('resWhat')||{}).value||'').trim();
+  PERSONAL.resources = PERSONAL.resources || [];
+  PERSONAL.resources.push({cat, name, url, what});
+  savePersonal(); renderResources();
+}
+function removeResource(idx){
+  if(!(PERSONAL.resources && PERSONAL.resources[idx])) return;
+  if(!confirm('Remove this resource?')) return;
+  PERSONAL.resources.splice(idx,1); savePersonal(); renderResources();
+}
+
 /* ---- init ---- */
 loadPersonal();
 mapGrade = PERSONAL.mapGrade || 'K';
 mapSubject = PERSONAL.mapSubject || 'Math';
 $$("#teacherSubTabs button").forEach(b=>b.onclick=()=>switchTeacherSub(b.dataset.sub));
 renderTeacher();
+showSignedIn();
 setSaveStatus(PERSONAL.name ? (cloudOn()?'saved':'local') : 'noname');
 if(PERSONAL.name) maybeLoadFromCloud();
 </script>
