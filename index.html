@@ -555,6 +555,10 @@ select.filter,.sel select{
   .res-add-btn{background:var(--evergreen);color:#fff;border:none;padding:10px 18px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer}
   .res-add-btn:hover{background:var(--forest-2)}
 
+
+  .pass-chip{display:inline-block;background:#fff7e0;border:1px solid var(--gold);color:var(--gold-deep);font-size:12px;font-weight:600;padding:4px 10px;border-radius:8px;margin:2px 0 6px;font-family:'JetBrains Mono',monospace}
+  .cert-sec-h{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--evergreen);border-top:2px solid var(--sage);padding-top:18px;margin:26px 0 14px}
+
   /* ---- Save status + admin button in header ---- */
   .ts-header .ts-actions{margin-left:auto;display:flex;align-items:center;gap:14px}
   #saveStatus{font-size:11.5px;font-weight:600;color:#bcd2c6;font-family:'JetBrains Mono',monospace}
@@ -684,7 +688,6 @@ select.filter,.sel select{
         <button data-sub="emergency">Emergency &amp; Safety</button>
         <button data-sub="license">Tier 1 License</button>
         <button data-sub="mapping">Curriculum Mapping</button>
-        <button data-sub="certificates">Video Certificates</button>
         <button data-sub="resources">Resources</button>
       </div>
 
@@ -693,11 +696,6 @@ select.filter,.sel select{
       <div class="sub-view" id="sub-emergency"></div>
       <div class="sub-view" id="sub-license"></div>
       <div class="sub-view" id="sub-mapping"></div>
-      <div class="sub-view" id="sub-certificates">
-        <div id="certConfigNote"></div>
-        <div id="certCatalog"></div>
-        <div id="certPlayerWrap" style="display:none"></div>
-      </div>
       <div class="sub-view" id="sub-resources"></div>
     </section>
 </main>
@@ -817,7 +815,13 @@ const BRING=["Laptop or device + charger","Notebook and pen","Water bottle","Cur
 const TEACHER_TRAININGS=[
  {id:"mrt",name:"Mandated Reporter Training (MRT)",time:"~60 minutes · required annually",
   desc:"Minnesota's required e-learning on identifying, reporting, and documenting suspected child abuse or neglect. Complete it before students arrive; the district must verify completion by November 15. This is also delivered live on Tuesday, Aug 18 — the online course covers the same requirement.",
-  url:"https://mncwta.umn.edu/elearning/mrt/index.html#/lessons/wio5eHdklJkZvxyUIvay7AGmf8sXfnmS",btn:"Start MRT e-learning"}
+  url:"https://mncwta.umn.edu/elearning/mrt/index.html#/lessons/wio5eHdklJkZvxyUIvay7AGmf8sXfnmS",btn:"Start MRT e-learning"},
+ {id:"healthsafety",name:"Health & Safety Training in the Educational Setting (2026-27)",time:"~2 sessions · Sections 1 & 2 · required annually · all staff",
+  desc:"Navigate Care's annual all-staff Health & Safety course. Complete BOTH sections: Section 1 — General Health (health office procedures; emergency situations incl. choking, hands-only CPR/AED, Narcan, asthma, severe allergies, seizures, diabetes; common childhood illness and injuries) AND Section 2 — OSHA Standards (workplace safety, bloodborne pathogens, infection control). Log in with your school email (Register the first time — username can be your email or full name; use \u201CLost your password?\u201D if you return and forget). Work through all sections, pass the quiz, then choose \u201CFinish course\u201D and your certificate appears — download it (the arrow button below the image) and submit it to your admin. You can finish across multiple sessions by signing back in.",
+  url:"https://navigatecare.com/courses/",btn:"Open Health & Safety course",pass:"health26"},
+ {id:"civilrights",name:"Civil Rights Training (MDE)",time:"MDE course · required for all staff",
+  desc:"The Minnesota Department of Education's civil rights training for school staff — covering nondiscrimination and equal access requirements in schools. Work through all lessons in the module to complete it.",
+  url:"https://mdebrightontraining.com/courses/mde/mde-150/lessons/lesson-1/presentation/story.html",btn:"Start Civil Rights training"}
 ];
 /* ---- Tier 1 license roadmap ---- */
 const LICENSE={
@@ -907,14 +911,27 @@ function renderPDSchedule(){
     ${days}${matrix}${extras}`;
 }
 function renderTeacherTrainings(){
+  $("#sub-trainings").innerHTML = `<div id="trainList"></div>
+    <div class="cert-section">
+      <h3 class="cert-sec-h">Video trainings — watch &amp; earn a certificate</h3>
+      <div id="certConfigNote"></div>
+      <div id="certCatalog"></div>
+      <div id="certPlayerWrap" style="display:none"></div>
+    </div>`;
+  renderTrainList();
+  renderCertificates();
+}
+function renderTrainList(){
   const linkArrow='<svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
   const cards=TEACHER_TRAININGS.map(t=>{
     const done=!!PERSONAL.checks['train_'+t.id];
+    const pass=t.pass?`<span class="pass-chip">Initial password: <b>${t.pass}</b></span>`:'';
     return `<div class="train-card">
       <div class="tc-ic"><svg viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg></div>
       <div style="flex:1">
         <h4>${t.name}</h4><div class="tmeta">${t.time}</div>
         <p>${t.desc}</p>
+        ${pass}
         <div class="tactions">
           <a class="btn-go" href="${t.url}" target="_blank" rel="noopener">${t.btn} ${linkArrow}</a>
           <span class="done-check ${done?'on':''}" onclick="toggleTrainDone('${t.id}')">
@@ -922,9 +939,9 @@ function renderTeacherTrainings(){
         </div>
       </div></div>`;
   }).join('');
-  $("#sub-trainings").innerHTML=cards+`
+  $("#trainList").innerHTML=cards+`
     <div class="callout"><div class="ci"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.7 3.86a2 2 0 00-3.4 0z"/></svg></div>
-      <div><h4>Your other PELSB trainings happen live during PD week</h4><p>Bloodborne Pathogens, FERPA/Title IX, Mental Health &amp; Suicide Prevention, Cultural Competency, American Indian History &amp; Culture, and Emergency Drills are all delivered Tuesday, Aug 18. Sign in at each so your clock hours are documented. See the PD Week Schedule tab for times.</p></div></div>`;
+      <div><h4>Your other PELSB trainings happen live during PD week</h4><p>FERPA/Title IX, Mental Health &amp; Suicide Prevention, Cultural Competency, American Indian History &amp; Culture, and Emergency Drills are delivered live Tuesday, Aug 18. Sign in at each so your clock hours are documented. See the PD Week Schedule tab for times.</p></div></div>`;
 }
 function renderLicense(){
   const type=PERSONAL.licenseType||'renewal';
@@ -951,21 +968,21 @@ function renderLicense(){
     <p style="font-size:11.5px;color:var(--ink-soft)">Requirements can change — always confirm current steps and fees with your administrator and the PELSB website before mailing. Your checkmarks here save privately on this device only.</p>`;
 }
 function switchTeacherSub(sub){
-  if(teacherSub==='certificates' && sub!=='certificates' && certPlayer && certPlayer.pauseVideo){
+  if(teacherSub==='trainings' && sub!=='trainings' && certPlayer && certPlayer.pauseVideo){
     try{certPlayer.pauseVideo();}catch(e){} clearInterval(certInterval); certInterval=null;
   }
   teacherSub=sub;
   $$("#teacherSubTabs button").forEach(b=>b.classList.toggle('on',b.dataset.sub===sub));
   $$(".sub-view").forEach(v=>v.classList.remove('on'));
   $("#sub-"+sub).classList.add('on');
-  if(sub==='certificates'){ loadYT(); renderCertificates(); }
+  if(sub==='trainings'){ loadYT(); }
   if(sub==='mapping'){ renderMapping(); }
   if(sub==='resources'){ renderResources(); }
 }
 function setTeacherName(v){ PERSONAL.name=v; savePersonalLocal(); maybeLoadFromCloud(); scheduleCloudSave(); }
 function setLicType(t){ PERSONAL.licenseType=t; savePersonal(); renderLicense(); }
 function toggleLicStep(type,id){ const k='lic_'+type+'_'+id; PERSONAL.checks[k]=!PERSONAL.checks[k]; savePersonal(); renderLicense(); }
-function toggleTrainDone(id){ const k='train_'+id; PERSONAL.checks[k]=!PERSONAL.checks[k]; savePersonal(); renderTeacherTrainings(); }
+function toggleTrainDone(id){ const k='train_'+id; PERSONAL.checks[k]=!PERSONAL.checks[k]; savePersonal(); renderTrainList(); }
 /* ====================== EMERGENCY & SAFETY ====================== */
 const EMERGENCY=[
  {id:"fire",cls:"fire",title:"Fire Drill & Evacuation Plan",sub:"5 drills per year · exit by designated doors",
@@ -1044,8 +1061,6 @@ const CERT_CONFIG = {
 const CERT_COURSES = [
  {id:"champion", title:"Every Kid Needs a Champion", youtube:"SFnMTHhKdkw", minutes:"~8 min",
   desc:"Rita Pierson's rousing call to educators to believe in every student and connect with them on a real, human level — because kids don't learn from people they don't like."},
- {id:"bbp", title:"Bloodborne Pathogens", youtube:"", minutes:"~20 min",
-  desc:"OSHA-aligned bloodborne pathogens awareness — exposure control, universal precautions, and reporting."},
  {id:"ferpa", title:"Data Privacy & FERPA", youtube:"SO5Xank9X5E", minutes:"~15 min",
   desc:"Handling student data responsibly under FERPA and the Minnesota Government Data Practices Act."},
  {id:"ai", title:"AI Acceptable Use", youtube:"", minutes:"~15 min",
