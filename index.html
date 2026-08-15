@@ -571,6 +571,19 @@ select.filter,.sel select{
   .cal-date.br{color:var(--overdue,#a6322a)}
   .cal-total td{border-top:2px solid var(--line);background:var(--sage);font-weight:700}
 
+
+  /* ---- assessment calendar ---- */
+  .assess-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+  .assess-card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px}
+  .assess-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+  .assess-card h4{font-family:'Fraunces',serif;font-size:15px;font-weight:600;margin:0;line-height:1.25}
+  .assess-grade{flex:0 0 auto;background:var(--evergreen);color:#fff;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;font-family:'JetBrains Mono',monospace;white-space:nowrap}
+  .assess-meta{font-size:11.5px;color:var(--ink-soft);margin:5px 0}
+  .assess-dates{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
+  .assess-dates .ad{background:var(--sage);color:var(--evergreen);font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:6px;font-family:'JetBrains Mono',monospace}
+  .assess-purpose{font-size:12px;line-height:1.5;color:var(--ink);margin:0}
+  .season-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+
   /* ---- Save status + admin button in header ---- */
   .ts-header .ts-actions{margin-left:auto;display:flex;align-items:center;gap:14px}
   #saveStatus{font-size:11.5px;font-weight:600;color:#bcd2c6;font-family:'JetBrains Mono',monospace}
@@ -697,6 +710,7 @@ select.filter,.sel select{
       <div class="sub-tabs" id="teacherSubTabs">
         <button class="on" data-sub="schedule">PD Week Schedule</button>
         <button data-sub="calendar">School Calendar</button>
+        <button data-sub="assessments">Assessments</button>
         <button data-sub="trainings">Required Trainings</button>
         <button data-sub="emergency">Emergency &amp; Safety</button>
         <button data-sub="license">Tier 1 License</button>
@@ -707,6 +721,7 @@ select.filter,.sel select{
 
       <div class="sub-view on" id="sub-schedule"></div>
       <div class="sub-view" id="sub-calendar"></div>
+      <div class="sub-view" id="sub-assessments"></div>
       <div class="sub-view" id="sub-trainings"></div>
       <div class="sub-view" id="sub-emergency"></div>
       <div class="sub-view" id="sub-license"></div>
@@ -842,14 +857,17 @@ const BRING=["Laptop + charger","Notebook & pen","Water bottle","Curriculum mate
 /* ---- Teacher trainings (self-serve / online) ---- */
 const TEACHER_TRAININGS=[
  {id:"mrt",name:"Mandated Reporter Training (MRT)",time:"~60 minutes · required annually",
-  desc:"Minnesota's required e-learning on identifying, reporting, and documenting suspected child abuse or neglect. Complete it before students arrive; the district must verify completion by November 15. This is also delivered live on Tuesday, Aug 18 — the online course covers the same requirement.",
+  desc:"Minnesota's required e-learning on identifying, reporting, and documenting suspected child abuse or neglect.",
   url:"https://mncwta.umn.edu/elearning/mrt/index.html#/lessons/wio5eHdklJkZvxyUIvay7AGmf8sXfnmS",btn:"Start MRT e-learning"},
  {id:"healthsafety",name:"Health & Safety Training in the Educational Setting (2026-27)",time:"~2 sessions · Sections 1 & 2 · required annually · all staff",
   desc:"Navigate Care's annual all-staff Health & Safety course. Complete BOTH sections: Section 1 — General Health (health office procedures; emergency situations incl. choking, hands-only CPR/AED, Narcan, asthma, severe allergies, seizures, diabetes; common childhood illness and injuries) AND Section 2 — OSHA Standards (workplace safety, bloodborne pathogens, infection control). Log in with your school email (Register the first time — username can be your email or full name; use \u201CLost your password?\u201D if you return and forget). Work through all sections, pass the quiz, then choose \u201CFinish course\u201D and your certificate appears — download it (the arrow button below the image) and submit it to your admin. You can finish across multiple sessions by signing back in.",
   url:"https://navigatecare.com/courses/",btn:"Open Health & Safety course",pass:"health26"},
  {id:"civilrights",name:"Civil Rights Training (MDE)",time:"MDE course · required for all staff",
   desc:"The Minnesota Department of Education's civil rights training for school staff — covering nondiscrimination and equal access requirements in schools. Work through all lessons in the module to complete it.",
-  url:"https://mdebrightontraining.com/courses/mde/mde-150/lessons/lesson-1/presentation/story.html",btn:"Start Civil Rights training"}
+  url:"https://mdebrightontraining.com/courses/mde/mde-150/lessons/lesson-1/presentation/story.html",btn:"Start Civil Rights training"},
+ {id:"aihc",name:"American Indian History & Culture (PELSB)",time:"PELSB license-renewal requirement",
+  desc:"PELSB requires training in the history, cultural heritage, and contemporary contributions of American Indians for license renewal. This PELSB page lists the approved trainings and how to meet the requirement. Bultum's PD week uses the MDE Federal Indian Policy eLearning (Canvas enrollment code 4JR34P · 7 modules · 1.5 CEU).",
+  url:"https://mn.gov/pelsb/current-educators/trainings/aihc/",btn:"Open PELSB AIHC trainings"}
 ];
 /* ---- Tier 1 license roadmap ---- */
 const LICENSE={
@@ -1005,6 +1023,7 @@ function switchTeacherSub(sub){
   $("#sub-"+sub).classList.add('on');
   if(sub==='trainings'){ loadYT(); }
   if(sub==='calendar'){ renderCalendar(); }
+  if(sub==='assessments'){ renderAssessments(); }
   if(sub==='mapping'){ renderMapping(); }
   if(sub==='resources'){ renderResources(); }
 }
@@ -1095,7 +1114,11 @@ const CERT_COURSES = [
  {id:"ai", title:"AI Acceptable Use", youtube:"", minutes:"~15 min",
   desc:"Using AI tools responsibly — keeping student data out of ungoverned tools, per MDE guidance."},
  {id:"phishing", title:"Cybersecurity & Phishing Awareness", youtube:"", minutes:"~15 min",
-  desc:"Spotting phishing, strong passwords/MFA, and reporting suspicious email before systems go live."}
+  desc:"Spotting phishing, strong passwords/MFA, and reporting suspicious email before systems go live."},
+ {id:"dojo", title:"ClassDojo for Teachers", youtube:"3oOy5zwsWjo", minutes:"Tutorial",
+  desc:"A walkthrough of ClassDojo — setting up your class, communicating with families, and tracking behavior and points."},
+ {id:"jmc", title:"JMC Training", youtube:"EQzXmRm_cT4", minutes:"Tutorial",
+  desc:"JMC student information system. Focus only on these parts: attendance, using messages, grading with points and percentages, creating categories, creating assignments, and scoring student work."}
 ];
 let ytReady=false, ytLoading=false, certPlayer=null, certCourse=null;
 let certWatched=new Set(), certLast=0, certInterval=null, certDone=false, certPending=null;
@@ -1943,6 +1966,48 @@ function renderCalendar(){
       <div class="panel-body" style="padding:0"><table class="matrix"><thead><tr><th>Month</th><th>Teacher days</th><th>Student days</th></tr></thead><tbody>${mo}
         <tr class="cal-total"><td>Total</td><td class="mday">181</td><td class="mday">168</td></tr>
       </tbody></table></div></div>`;
+}
+
+/* ===================== ASSESSMENT CALENDAR ===================== */
+const ASSESSMENTS=[
+ {name:"FastBridge Reading",grades:"K–3",dur:"2–5 min per measure",dates:["Fall: Sept 1–4, 2026","Winter: Dec 1–4, 2026","Spring: Apr 26–30, 2027"],purpose:"Measures early literacy skills, reading fluency, and foundational reading development."},
+ {name:"Capti Reading Assessment",grades:"4–8",dur:"~30–45 min",dates:["Fall: Sept 1–4, 2026","Winter: Dec 1–4, 2026","Spring: Apr 26–30, 2027"],purpose:"Identifies students at risk for reading difficulties and supports intervention planning."},
+ {name:"NWEA MAP Growth — Fall",grades:"K–8",dur:"40–60 min per subject",dates:["Aug 25 – Sept 4, 2026"],purpose:"Measures student growth and achievement in Reading, Math, Language, and Science."},
+ {name:"NWEA MAP Growth — Winter",grades:"K–8",dur:"40–60 min per subject",dates:["Dec 8–17, 2026"],purpose:"Measures student progress and growth since fall testing."},
+ {name:"WIDA ACCESS / Alternate ACCESS",grades:"K–8 EL",dur:"Varies by domain",dates:["Feb 16 – Mar 2, 2027"],purpose:"Measures English language proficiency in Listening, Speaking, Reading, and Writing."},
+ {name:"MCA Reading & Mathematics / Alt MCA / Math MTAS",grades:"3–8",dur:"Within testing window",dates:["Apr 20–30, 2027"],purpose:"Minnesota state assessment measuring student achievement in Reading and Mathematics."},
+ {name:"NWEA MAP Growth — Spring (K–2)",grades:"K–2",dur:"40–60 min per subject",dates:["May 3–7, 2027"],purpose:"Measures yearly growth and informs placement and intervention decisions."},
+ {name:"MCA Science",grades:"5 & 8",dur:"Within testing window",dates:["May 4–7, 2027"],purpose:"Minnesota state assessment measuring student achievement in Science (Grades 5 and 8)."},
+ {name:"NWEA MAP Growth — Spring (3–8)",grades:"3–8",dur:"40–60 min per subject",dates:["May 10–14, 2027"],purpose:"Measures yearly academic growth and achievement."}
+];
+const STATE_WINDOWS=[
+ ["WIDA ACCESS / WIDA Alt ACCESS","Feb 1 – Mar 26, 2027"],
+ ["MCA Reading & Mathematics / Alt MCA / Math MTAS","Mar 8 – May 7, 2027"],
+ ["MCA Science","Mar 8 – May 14, 2027"]
+];
+const SEASONS=[
+ {name:"Fall 2026",items:[["Aug 25 – Sept 4","NWEA Fall (K–8)"],["Sept 1–4","FastBridge (K–3)"],["Sept 1–4","Capti (Grades 4–8)"]]},
+ {name:"Winter 2026",items:[["Dec 1–4","FastBridge (K–3)"],["Dec 1–4","Capti (Grades 4–8)"],["Dec 8–17","NWEA Winter (K–8)"]]},
+ {name:"Spring 2027",items:[["Feb 16 – Mar 2","WIDA ACCESS / Alt ACCESS"],["Apr 20–30","MCA Reading & Mathematics"],["Apr 26–30","FastBridge (K–3)"],["Apr 26–30","Capti (Grades 4–8)"],["May 3–7","NWEA Spring (K–2)"],["May 4–7","MCA Science (5 & 8)"],["May 10–14","NWEA Spring (3–8)"]]}
+];
+function renderAssessments(){
+  const host=document.getElementById('sub-assessments'); if(!host) return;
+  const cards=ASSESSMENTS.map(a=>`<div class="assess-card">
+    <div class="assess-top"><h4>${a.name}</h4><span class="assess-grade">${a.grades}</span></div>
+    <div class="assess-meta">${a.dur}</div>
+    <div class="assess-dates">${a.dates.map(d=>`<span class="ad">${d}</span>`).join('')}</div>
+    <p class="assess-purpose">${a.purpose}</p>
+  </div>`).join('');
+  const seasons=SEASONS.map(s=>`<div class="mini-panel"><h4>${s.name}</h4>${s.items.map(it=>`<div class="cal-row"><span class="cal-date">${it[0]}</span><span>${it[1]}</span></div>`).join('')}</div>`).join('');
+  const windows=STATE_WINDOWS.map(w=>`<tr><td>${w[0]}</td><td class="mday">${w[1]}</td></tr>`).join('');
+  host.innerHTML=`
+    <div class="callout" style="margin-bottom:20px"><div class="ci"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+      <div><h4>Bultum Academy · 2026–2027 Assessment Calendar</h4><p>Every formative, growth, English-language, and Minnesota state assessment across grades K–8 — use it to plan instruction, proctoring, and make-ups.</p></div></div>
+    <div class="assess-grid">${cards}</div>
+    <h3 class="cert-sec-h">Testing schedule by season</h3>
+    <div class="season-grid">${seasons}</div>
+    <div class="panel" style="margin-top:20px"><div class="panel-head"><h3>State assessment windows</h3></div>
+      <div class="panel-body" style="padding:0"><table class="matrix"><thead><tr><th>Assessment</th><th>State window</th></tr></thead><tbody>${windows}</tbody></table></div></div>`;
 }
 
 /* ---- init ---- */
