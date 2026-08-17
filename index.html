@@ -443,6 +443,7 @@ select.filter,.sel select{
 .cert-badge{font-size:11px;font-weight:700;font-family:'JetBrains Mono';padding:4px 9px;border-radius:20px;white-space:nowrap}
 .cert-badge.done{background:#e0efe0;color:var(--forest)}
 .cert-badge.soon{background:var(--sage);color:var(--ink-soft)}
+.cert-badge.opt{background:#f5ecd6;color:var(--gold-deep);margin-top:7px;display:inline-block}
 
 .cert-player{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
 .cp-head{display:flex;align-items:center;gap:14px;padding:15px 20px;border-bottom:1px solid var(--line)}
@@ -798,69 +799,69 @@ const PD_SCHEDULE=[
  {day:"Monday",date:"August 17",focus:"Welcome, Onboarding & Foundations",sessions:[
    {time:"8:00 – 8:30",title:"Welcome Breakfast & Sign-In",desc:"Materials, name tags, parking & badges",who:"Office",loc:"Music Room"},
    {time:"8:30 – 9:00",title:"Staff Introductions & Get to Know Each Other",desc:"Returning + new staff connections",who:"AR / AY / MM",loc:"Music Room"},
-   {time:"9:00 – 10:00",title:"Welcome — Vision & Year Goals",desc:"Mission and 2026–2027 schoolwide goals",who:"Arif",loc:"Music Room"},
-   {time:"10:00 – 11:00",title:"Bultum Families & Cultural Context",desc:"Oromo, Somali & Arabic-speaking community; EL strategies",who:"Leadership",loc:"Music Room",comp:true},
-   {time:"11:00 – 12:00",title:"Tech Walkthrough + Handbook & Policies",desc:"Printer/copier, JMC, Common Curriculum, MobyMax basics; attendance & key dates",who:"AR",loc:"Music Room"},
+   {time:"9:00 – 10:00",title:"Welcome — Vision & Year Goals",desc:"Mission and 2026–2027 schoolwide goals",who:"Abas",loc:"Music Room"},
+   {time:"10:00 – 11:00",title:"Logistics and Procedures",desc:"Student entry, building access, breakfast, lunch and recess",who:"AR",loc:"Music Room"},
+   {time:"11:00 – 12:00",title:"Office Overview",who:"Office",loc:"Music Room"},
    {time:"12:00 – 1:00",title:"Lunch",lunch:true},
    {time:"1:00 – 2:00",title:"Open Enrollment / Benefits",desc:"Insurance, benefits Q&A",who:"Grace Vasilis",loc:"Music Room"},
-   {time:"2:00 – 3:00",title:"Office Overview & All-Staff Health & Safety",desc:"Building procedures, sign-in/out, supply/copy systems",who:"Office",loc:"Music Room",comp:true},
-   {time:"3:15 – 4:00",title:"Curriculum Mapping Kickoff & Classroom Setup",desc:"Introduce mapping framework; begin in-room setup",who:"Teams / Self",loc:"Rooms"}
+   {time:"2:15 – 4:00",title:"Classroom Setup",desc:"Begin in-room setup",who:"Teams / Self",loc:"Classrooms"}
  ]},
  {day:"Tuesday",date:"August 18",focus:"MN Compliance, Safety & Student Wellbeing",sessions:[
    {time:"8:00 – 8:30",title:"Coffee & Day 2 Welcome",who:"Office",loc:"Music Room"},
-   {time:"8:30 – 9:30",title:"Behavior & MTSS",desc:"Multi-tiered systems of support; Tier 1/2/3 behavior framework",who:"AR / MM",loc:"Music Room",comp:true},
-   {time:"9:30 – 10:30",title:"Emergency Drills & Crisis Response",desc:"Lockdown, fire, severe weather, evacuation protocols",who:"AR",loc:"Music Room",comp:true},
-   {time:"10:45 – 12:00",title:"Mental Health, Suicide Prevention & Trauma-Informed Practice",desc:"PELSB requirement · self-paced online module + debrief",who:"Online",loc:"Classrooms",comp:true},
+   {time:"8:30 – 9:30",title:"Bultum Families & Cultural Context",desc:"Oromo, Somali & Arabic-speaking community; EL strategies",who:"Leadership",loc:"Music Room",comp:true},
+   {time:"9:30 – 10:30",title:"Emergency Drills & Crisis Response",desc:"Lockdown, fire, severe weather, evacuation protocols",who:"Abas",loc:"Music Room",comp:true},
+   {time:"10:45 – 12:00",title:"Mental Health, Suicide Prevention & Trauma-Informed Practice",desc:"PELSB requirement · self-paced online module + debrief",who:"Online",loc:"Music Room",comp:true},
    {time:"12:00 – 1:00",title:"Lunch",lunch:true},
-   {time:"1:00 – 2:15",title:"Mandated Reporter Training",desc:"MN required annually · MNCWTA online module",who:"Online",loc:"Classrooms",comp:true},
-   {time:"2:15 – 3:00",title:"American Indian History & Culture",desc:"PELSB required · MDE Federal Indian Policy eLearning (kickoff)",who:"Online",loc:"Classrooms",comp:true},
-   {time:"3:15 – 4:00",title:"Bloodborne Pathogens, FERPA & Title IX",desc:"OSHA-aligned BBP; data privacy; harassment/discrimination",who:"Online",loc:"Classrooms",comp:true}
+   {time:"1:00 – 2:15",title:"Mandated Reporter Training",desc:"MN required annually · MNCWTA online module",who:"Online",loc:"Music Room",comp:true},
+   {time:"2:15 – 3:00",title:"American Indian History & Culture",desc:"PELSB required · MDE Federal Indian Policy eLearning (kickoff)",who:"Online",loc:"Music Room",comp:true},
+   {time:"3:15 – 4:00",title:"Bloodborne Pathogens, FERPA & Title IX",desc:"OSHA-aligned BBP; data privacy; harassment/discrimination",who:"Online",loc:"Music Room",comp:true}
  ]},
  {day:"Wednesday",date:"August 19",focus:"SPED, Coaching & Curriculum Mapping",sessions:[
    {time:"8:00 – 8:30",title:"Coffee & Day 3 Welcome",who:"Office",loc:"Music Room"},
+   {time:"8:30 – 9:00",title:"Behavior & MTSS",desc:"Multi-tiered systems of support; Tier 1/2/3 behavior framework (condensed)",who:"Mr. Mohamed",loc:"Music Room",comp:true},
    {time:"9:00 – 11:00",title:"SPED & 504 Overview",desc:"Caseloads, IEP timelines, service delivery, paperwork",who:"S. Abdirashid",loc:"Music Room"},
    {time:"11:00 – 12:00",title:"Instructional Coach Introduction",desc:"Meet Meg; overview of coaching support this year",who:"Meg Cavalier",loc:"Music Room"},
    {time:"12:00 – 1:00",title:"Lunch",lunch:true},
    {time:"1:00 – 2:00",title:"Curriculum Mapping",desc:"Guided mapping session",who:"Meg Cavalier",loc:"Music Room"},
    {time:"2:00 – 3:00",title:"Curriculum Mapping",desc:"Guided mapping session",who:"Meg Cavalier",loc:"Music Room"},
-   {time:"3:00 – 4:00",title:"Curriculum Mapping & Grade-Level Planning",desc:"Build pacing maps; align across grade teams",who:"Teams",loc:"Rooms"}
+   {time:"3:00 – 4:00",title:"Curriculum Mapping & Grade-Level Planning",desc:"Build pacing maps; align across grade teams",who:"Teams",loc:"Classrooms"}
  ]},
  {day:"Thursday",date:"August 20",focus:"Reading, Behavior & Community",sessions:[
    {time:"8:00 – 8:30",title:"Coffee & Day 4 Welcome",who:"Office",loc:"Music Room"},
-   {time:"8:30 – 10:30",title:"Groves Training",desc:"New teachers + interventionists (K-3); optional for all K-3 teachers",who:"T. Harty",loc:"Intervention Room",comp:true},
-   {time:"10:45 – 11:30",title:"BARR Overview — Fostering Resilience & Reducing Risks",desc:"Condensed K-12 BARR essentials; cohorts, risk review, asset-building",who:"BARR Coach",loc:"Music Room",comp:true},
+   {time:"8:30 – 10:30",title:"Groves Training",desc:"Required: new K-3 teachers & interventionists · Optional: returning Groves-certified teachers",who:"Meg Schneeman",loc:"Intervention Room",comp:true},
+   {time:"10:45 – 11:30",title:"BARR Overview — Fostering Resilience & Reducing Risks",desc:"Condensed K-12 BARR essentials; cohorts, risk review, asset-building",who:"Staff",loc:"Music Room",comp:true},
    {time:"11:30 – 1:00",title:"Community Lunch — Church & Community (provided)",lunch:true},
-   {time:"1:00 – 2:00",title:"Grade-Level & Department Meetings",desc:"Grade 4, MS Math, MS ELA, MS Social Studies, MS Science",who:"Team Leads",loc:"Rooms"},
-   {time:"2:00 – 2:45",title:"FastBridge & Capti ReadBasix",desc:"K-3 universal screening + intervention tools (interventionists & subs)",who:"LR / BC / AR",loc:"Music Room",comp:true},
+   {time:"1:00 – 2:00",title:"Grade-Level & Department Meetings",desc:"Grade 4, MS Math, MS ELA, MS Social Studies, MS Science",who:"Grade-Level Teachers",loc:"Classrooms"},
+   {time:"2:00 – 2:45",title:"FastBridge & Capti ReadBasix",desc:"K-3 universal screening + intervention tools",who:"Interventionists",loc:"Music Room",comp:true},
    {time:"2:45 – 3:30",title:"JMC / Class Dojo / MobyMax",desc:"Gradebook / attendance / behavior tracking; Q&A optional",who:"Abas / Mohamed",loc:"Music Room"},
-   {time:"3:30 – 4:00",title:"Independent Classroom Prep",desc:"Room setup, materials, first-week plans",who:"Self",loc:"Rooms"}
+   {time:"3:30 – 4:00",title:"Independent Classroom Prep",desc:"Room setup, materials, first-week plans",who:"Self",loc:"Classrooms"}
  ]},
  {day:"Friday",date:"August 21",focus:"Final Prep & Open House",sessions:[
    {time:"12:00 – 12:30",title:"Staff Arrives · Q&A and Week Wrap-Up",desc:"Outstanding questions; quick week reflection",who:"Leadership",loc:"Music Room"},
-   {time:"12:30 – 3:00",title:"Independent Classroom Prep",desc:"Final setup, lesson copies, materials, bulletin boards, displays",who:"Self",loc:"Rooms"},
+   {time:"12:30 – 3:00",title:"Independent Classroom Prep",desc:"Final setup, lesson copies, materials, bulletin boards, displays",who:"Self",loc:"Classrooms"},
    {time:"3:00 – 7:00",title:"OPEN HOUSE",desc:"Families arrive starting at 3:00; meet the teacher",who:"All Staff",loc:"Building"}
  ]}
 ];
 const COMPLIANCE_MATRIX=[
  {topic:"Mandated Reporter (Child Abuse / Neglect)",where:"Annual MN requirement; cross-reporting to law enforcement, local welfare, and MDE. Online module (MNCWTA)",day:"Tue"},
  {topic:"Bloodborne Pathogens (OSHA / MN)",where:"Navigate Health & Safety online modules (BBP + infection control). Ask the office for the password",day:"Tue"},
- {topic:"Cultural Competency & English Learners (PELSB)",where:"Bultum Families & Cultural Context (Mon) — asset-based framing + EL strategies for Oromo / Arabic / Somali learners",day:"Mon"},
+ {topic:"Cultural Competency & English Learners (PELSB)",where:"Bultum Families & Cultural Context (Tue) — asset-based framing + EL strategies for Oromo / Arabic / Somali learners",day:"Tue"},
  {topic:"American Indian History & Culture (PELSB)",where:"MDE Federal Indian Policy eLearning (7 modules · 1.5 CEU · Canvas code 4JR34P)",day:"Tue"},
  {topic:"Mental Health / Suicide Prevention / Early-Onset Warning Signs",where:"Mental Health, Suicide Prevention & Trauma-Informed Practice (Tue) — self-paced online module",day:"Tue"},
  {topic:"Reading Preparation (MN Read Act)",where:"Groves Training (Thu) + curriculum mapping with Science of Reading alignment",day:"Thu"},
- {topic:"Positive Behavioral Interventions (PBIS)",where:"Behavior & MTSS (Tue) + BARR Overview (Thu)",day:"Tue / Thu"},
+ {topic:"Positive Behavioral Interventions (PBIS)",where:"Behavior & MTSS (Wed) + BARR Overview (Thu)",day:"Wed / Thu"},
  {topic:"Emergency / Safety Drills",where:"Emergency Drills & Crisis Response (Tue) + Office / Health & Safety block (Mon)",day:"Mon / Tue"},
  {topic:"Data Privacy / FERPA",where:"Bloodborne Pathogens, FERPA & Title IX block (Tue)",day:"Tue"},
  {topic:"Health Services Staff Annual (Health Office / Med. Admin. only)",where:"60–120 min self-paced · Navigate courses · initial password: healthassistant",day:"Self-paced"}
 ];
 const PERSONNEL=[
  ["Arif","Executive Director — Welcome & Vision"],
- ["Abas","Assistant Director / Health, Safety & Emergency Lead"],
+ ["Abas","Assistant Director — Welcome & Vision · Health, Safety & Emergency Lead"],
  ["LR / BC / AR","Curriculum & Instructional Coaches (schoolwide)"],
  ["Meg Cavalier","Instructional Coach — Curriculum Mapping"],
  ["Mr. Mohamed","Behavior & MTSS Lead"],
  ["S. Abdirashid","Special Education Director"],
- ["T. Harty","Groves Reading Coach (external)"],
+ ["Meg Schneeman","Groves Reading Coach (external)"],
  ["Grace Vasilis","Benefits / Open Enrollment (visiting)"],
  ["Paul","JMC Student Information System (as needed)"],
  ["AR / AY / MM","New-staff onboarding leads"]
@@ -971,7 +972,8 @@ function renderPDSchedule(){
 function renderTeacherTrainings(){
   $("#sub-trainings").innerHTML = `<div id="trainList"></div>
     <div class="cert-section">
-      <h3 class="cert-sec-h">Video trainings — watch &amp; earn a certificate</h3>
+      <h3 class="cert-sec-h">Video trainings <span style="font-weight:400;color:var(--ink-soft)">— optional, but helpful</span></h3>
+      <p class="hint" style="margin:-4px 0 14px">Not required — watch whichever are useful to you, and you can still earn a certificate for each.</p>
       <div id="certConfigNote"></div>
       <div id="certCatalog"></div>
       <div id="certPlayerWrap" style="display:none"></div>
@@ -1161,7 +1163,7 @@ function renderCertificates(){
     const badge=done?'<span class="cert-badge done">✓ Completed</span>':(ready?'':'<span class="cert-badge soon">Add video ID</span>');
     return `<div class="cert-card">
       <div class="cc-top"><div class="cc-ic"><svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
-        <div><h4>${c.title}</h4><div class="cc-min">${c.minutes}</div></div></div>
+        <div><h4>${c.title}</h4><div class="cc-min">${c.minutes}</div><span class="cert-badge opt">Optional · but helpful</span></div></div>
       <p>${c.desc}</p>
       <div class="cc-foot">
         <button class="cc-btn" ${ready?'':'disabled'} onclick="openCourse('${c.id}')">${done?'Watch again':(ready?'Start training':'Coming soon')}</button>
@@ -2781,7 +2783,7 @@ function renderVisionMission(){
   document.getElementById('visionFrame').srcdoc = html;
   visionLoaded=true;
 }
-const DIRECTORY=[{"group": "Leadership & Coaches", "rows": [{"role": "Director", "name": "Arif Bakar", "ext": "", "room": "", "email": ""}, {"role": "Office", "name": "Abas Regassa & Aisha Yusuf", "ext": "3523 / 3522", "room": "", "email": ""}, {"role": "Behavior", "name": "Mohamed Mohamed", "ext": "", "room": "", "email": ""}, {"role": "Instructional Coach", "name": "Meg Cavalier", "ext": "", "room": "", "email": ""}, {"role": "Groves Coach", "name": "Meg Schneeman", "ext": "", "room": "", "email": ""}]}, {"group": "Elementary Classroom Teachers", "rows": [{"role": "Pre-K", "name": "Jaelynn Persaud", "ext": "4591", "room": "115", "email": "jaelynnpersaud@bultumacademy.org"}, {"role": "KG – A", "name": "Barbara Maas", "ext": "3534", "room": "101", "email": "barbaramaas@bultumacademy.org"}, {"role": "KG – B", "name": "Agatha Pietrzak", "ext": "3533", "room": "103", "email": "agathapietrzak@bultumacademy.org"}, {"role": "1st – A", "name": "Jake Gibbons", "ext": "3538", "room": "104", "email": "jakegibbons@bultumacademy.org"}, {"role": "1st – B", "name": "Yosra Brander", "ext": "4534", "room": "108", "email": "yosrabrander@bultumacademy.org"}, {"role": "2nd – A", "name": "Sophia Lancaster", "ext": "4586", "room": "118", "email": "sophialancaster@bultumacademy.org"}, {"role": "2nd – B", "name": "Nati Mohamed", "ext": "4537", "room": "105", "email": "natimohamed@bultumacademy.org"}, {"role": "3rd – A", "name": "Zachary Etter", "ext": "3537", "room": "122", "email": "zacharyetter@bultumacademy.org"}, {"role": "3rd – B", "name": "Sydney Grinnell", "ext": "4596", "room": "117", "email": "sydneygrinnell@bultumacademy.org"}, {"role": "4th – A", "name": "Annalise Corcoran", "ext": "3525", "room": "135", "email": "annalisecorcoran@bultumacademy.org"}, {"role": "4th – B", "name": "Autumn Rosebur", "ext": "3526", "room": "133", "email": "autumnrosebur@bultumacademy.org"}]}, {"group": "Middle School", "rows": [{"role": "Math", "name": "Stacy Meck", "ext": "4597", "room": "139", "email": "stacymeck@bultumacademy.org"}, {"role": "Science", "name": "Arhely Bermudez Alvarado", "ext": "4597", "room": "139", "email": "ArhelybermudezA@bultumacademy.org"}, {"role": "ELA", "name": "Allison Pieper", "ext": "3532", "room": "140", "email": "allisonpieper@bultumacademy.org"}, {"role": "Social Studies", "name": "Lucas Vachon", "ext": "3531", "room": "141", "email": "lucasvachon@bultumacademy.org"}, {"role": "ELA Teacher", "name": "Ahmed Adam", "ext": "3524", "room": "", "email": "ahmedadam@bultumacademy.org"}]}, {"group": "Intervention, Special Education & Specialists", "rows": [{"role": "Special Education", "name": "Sahra Tobe", "ext": "4558", "room": "102", "email": "sahratobe@bultumacademy.org"}, {"role": "Special Education", "name": "Asha Abdurhaman", "ext": "4558", "room": "102", "email": "ashaabdurhaman@bultumacademy.org"}, {"role": "Reading Intervention (K–4)", "name": "Hailey Roemeling", "ext": "3536", "room": "107", "email": "haileyroemeling@bultumacademy.org"}, {"role": "Reading Intervention (5–8)", "name": "Kurt Gough", "ext": "3536", "room": "107", "email": "kurtgough@bultumacademy.org"}, {"role": "Physical Education", "name": "Ryan Wooten", "ext": "3527", "room": "", "email": "ryanwooten@bultumacademy.org"}, {"role": "Arabic Teacher", "name": "Shaymaa Jakjook", "ext": "", "room": "", "email": ""}, {"role": "Oromo Teacher", "name": "Ketabo Ensene", "ext": "", "room": "", "email": ""}]}, {"group": "Behavior & Support Staff", "rows": [{"role": "Behavior Specialist", "name": "Manira Gray", "ext": "", "room": "", "email": ""}, {"role": "Behavior Support", "name": "Karim Abdurhaman", "ext": "", "room": "", "email": ""}, {"role": "EA – Classroom Support", "name": "Fauzia Ali", "ext": "", "room": "", "email": ""}, {"role": "EA – Classroom Support", "name": "Juhar Tahir", "ext": "", "room": "", "email": ""}, {"role": "EA – Classroom Support", "name": "Shamsei Hashim", "ext": "", "room": "", "email": ""}, {"role": "EA – SPED Support", "name": "Zeynaba Kadir", "ext": "", "room": "", "email": ""}, {"role": "EA – SPED Support", "name": "Eman Tahir", "ext": "", "room": "", "email": ""}, {"role": "EA – SPED Support", "name": "Shukri Adem", "ext": "", "room": "", "email": ""}, {"role": "Support Staff", "name": "Asmaa’a Omar", "ext": "", "room": "", "email": ""}, {"role": "Lunch Staff", "name": "Maliha Osman", "ext": "", "room": "", "email": ""}, {"role": "Lunch Staff", "name": "Mardiya Gutu", "ext": "", "room": "", "email": ""}]}];
+const DIRECTORY=[{"group": "Leadership & Office", "rows": [{"role": "Director", "name": "Arif Bakar", "ext": "", "room": "", "email": ""}, {"role": "Office", "name": "Abas Regassa", "ext": "3523", "room": "", "email": ""}, {"role": "Office", "name": "Aisha Yusuf", "ext": "3522", "room": "", "email": ""}, {"role": "Behavior", "name": "Mohamed Mohamed", "ext": "", "room": "", "email": ""}]}, {"group": "Coaches", "rows": [{"role": "Instructional Coach", "name": "Meg Cavalier", "ext": "", "room": "", "email": ""}, {"role": "Groves Coach", "name": "Meg Schneeman", "ext": "", "room": "", "email": ""}]}, {"group": "Elementary Classroom Teachers", "rows": [{"role": "Pre-K", "name": "Jaelynn Persaud", "ext": "4591", "room": "115", "email": "jaelynnpersaud@bultumacademy.org"}, {"role": "KG – A", "name": "Barbara Maas", "ext": "3534", "room": "101", "email": "barbaramaas@bultumacademy.org"}, {"role": "KG – B", "name": "Agatha Pietrzak", "ext": "3533", "room": "103", "email": "agathapietrzak@bultumacademy.org"}, {"role": "1st – A", "name": "Jake Gibbons", "ext": "3538", "room": "104", "email": "jakegibbons@bultumacademy.org"}, {"role": "1st – B", "name": "Yosra Brander", "ext": "4534", "room": "108", "email": "yosrabrander@bultumacademy.org"}, {"role": "2nd – A", "name": "Sophia Lancaster", "ext": "4586", "room": "118", "email": "sophialancaster@bultumacademy.org"}, {"role": "2nd – B", "name": "Nati Mohamed", "ext": "4537", "room": "105", "email": "natimohamed@bultumacademy.org"}, {"role": "3rd – A", "name": "Zachary Etter", "ext": "3537", "room": "122", "email": "zacharyetter@bultumacademy.org"}, {"role": "3rd – B", "name": "Sydney Grinnell", "ext": "4596", "room": "117", "email": "sydneygrinnell@bultumacademy.org"}, {"role": "4th – A", "name": "Annalise Corcoran", "ext": "3525", "room": "135", "email": "annalisecorcoran@bultumacademy.org"}, {"role": "4th – B", "name": "Autumn Rosebur", "ext": "3526", "room": "133", "email": "autumnrosebur@bultumacademy.org"}]}, {"group": "Middle School", "rows": [{"role": "Math", "name": "Stacy Meck", "ext": "4597", "room": "139", "email": "stacymeck@bultumacademy.org"}, {"role": "Science", "name": "Arhely Bermudez Alvarado", "ext": "4597", "room": "139", "email": "ArhelybermudezA@bultumacademy.org"}, {"role": "ELA", "name": "Allison Pieper", "ext": "3532", "room": "140", "email": "allisonpieper@bultumacademy.org"}, {"role": "Social Studies", "name": "Lucas Vachon", "ext": "3531", "room": "141", "email": "lucasvachon@bultumacademy.org"}]}, {"group": "Intervention, Special Education & Specialists", "rows": [{"role": "Special Education", "name": "Sahra Tobe", "ext": "4558", "room": "102", "email": "sahratobe@bultumacademy.org"}, {"role": "Special Education", "name": "Asha Abdurhaman", "ext": "4558", "room": "102", "email": "ashaabdurhaman@bultumacademy.org"}, {"role": "Reading Intervention (K–4)", "name": "Hailey Roemeling", "ext": "3536", "room": "107", "email": "haileyroemeling@bultumacademy.org"}, {"role": "Reading Intervention (5–8)", "name": "Kurt Gough", "ext": "3536", "room": "107", "email": "kurtgough@bultumacademy.org"}, {"role": "ELL Teacher (all grades)", "name": "Ahmed Adam", "ext": "3524", "room": "", "email": "ahmedadam@bultumacademy.org"}, {"role": "Physical Education", "name": "Ryan Wooten", "ext": "3527", "room": "", "email": "ryanwooten@bultumacademy.org"}, {"role": "Arabic Teacher", "name": "Shaymaa Jakjook", "ext": "", "room": "", "email": ""}, {"role": "Oromo Teacher", "name": "Ketabo Ensene", "ext": "", "room": "", "email": ""}]}, {"group": "Behavior & Support Staff", "rows": [{"role": "Behavior Specialist", "name": "Manira Gray", "ext": "", "room": "", "email": ""}, {"role": "Behavior Support", "name": "Karim Abdurhaman", "ext": "", "room": "", "email": ""}, {"role": "EA – Classroom Support", "name": "Fauzia Ali", "ext": "", "room": "", "email": ""}, {"role": "EA – Classroom Support", "name": "Juhar Tahir", "ext": "", "room": "", "email": ""}, {"role": "EA – Classroom Support", "name": "Shamsei Hashim", "ext": "", "room": "", "email": ""}, {"role": "EA – SPED Support", "name": "Zeynaba Kadir", "ext": "", "room": "", "email": ""}, {"role": "EA – SPED Support", "name": "Eman Tahir", "ext": "", "room": "", "email": ""}, {"role": "EA – SPED Support", "name": "Shukri Adem", "ext": "", "room": "", "email": ""}, {"role": "Support Staff", "name": "Asmaa’a Omar", "ext": "", "room": "", "email": ""}, {"role": "Lunch Staff", "name": "Maliha Osman", "ext": "", "room": "", "email": ""}, {"role": "Lunch Staff", "name": "Mardiya Gutu", "ext": "", "room": "", "email": ""}]}];
 
 function renderDirectory(){
   const host=document.getElementById('sub-directory'); if(!host) return;
