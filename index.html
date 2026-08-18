@@ -340,6 +340,19 @@ select.filter,.sel select{
 .dir-table td.d-name{font-weight:600;white-space:nowrap}
 .dir-table a{color:var(--evergreen);text-decoration:none}
 .dir-table a:hover{text-decoration:underline}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.res-card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 26px -22px rgba(19,53,42,.5)}
+.res-card .rh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.res-card h4{font-family:'Fraunces',serif;font-weight:600;font-size:18px;color:var(--ink);line-height:1.1}
+.res-chip{font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--gold-deep);background:#f5ecd6;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.res-card p{font-size:13.5px;color:var(--ink-soft);line-height:1.5}
+.res-cred{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:12.5px;display:grid;gap:5px}
+.res-cred .cr{display:flex;gap:8px;align-items:baseline}
+.res-cred .k{color:var(--muted);min-width:78px;font-weight:700;flex-shrink:0}
+.res-cred .v{color:var(--ink)}
+.res-cred code,.res-cred .code{font-family:'JetBrains Mono',monospace;background:#eef1e8;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12px;color:var(--ink)}
+.res-card .rbtn{margin-top:auto;display:inline-block;text-align:center;background:var(--evergreen);color:#fff;text-decoration:none;font-weight:700;font-size:13.5px;padding:11px 14px;border-radius:8px;transition:.15s}
+.res-card .rbtn:hover{filter:brightness(1.12)}
 .matrix .mtopic{font-weight:600}
 .matrix .mday{font-family:'JetBrains Mono';font-size:11px;color:var(--gold-deep);white-space:nowrap}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
@@ -725,6 +738,7 @@ select.filter,.sel select{
         <button data-sub="license">Tier 1 License</button>
         <button data-sub="mapping">Curriculum Mapping</button>
         <button data-sub="directory">Staff Directory</button>
+        <button data-sub="curriculum">Curriculum Resources</button>
         <button data-sub="resources">Resources</button>
         <button data-sub="timeoff">Time Off</button>
       </div>
@@ -739,6 +753,7 @@ select.filter,.sel select{
       <div class="sub-view" id="sub-license"></div>
       <div class="sub-view" id="sub-mapping"></div>
       <div class="sub-view" id="sub-directory"></div>
+      <div class="sub-view" id="sub-curriculum"></div>
       <div class="sub-view" id="sub-resources"></div>
       <div class="sub-view" id="sub-timeoff">
         <div class="callout" style="margin-bottom:16px"><div class="ci"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg></div>
@@ -875,9 +890,6 @@ const TEACHER_TRAININGS=[
  {id:"healthsafety",name:"Health & Safety Training in the Educational Setting (2026-27)",time:"~2 sessions · Sections 1 & 2 · required annually · all staff",
   desc:"Navigate Care's annual all-staff Health & Safety course. Complete BOTH sections: Section 1 — General Health (health office procedures; emergency situations incl. choking, hands-only CPR/AED, Narcan, asthma, severe allergies, seizures, diabetes; common childhood illness and injuries) AND Section 2 — OSHA Standards (workplace safety, bloodborne pathogens, infection control). Log in with your school email (Register the first time — username can be your email or full name; use \u201CLost your password?\u201D if you return and forget). Work through all sections, pass the quiz, then choose \u201CFinish course\u201D and your certificate appears — download it (the arrow button below the image) and submit it to your admin. You can finish across multiple sessions by signing back in.",
   url:"https://navigatecare.com/courses/",btn:"Open Health & Safety course",pass:"health26"},
- {id:"civilrights",name:"Civil Rights Training (MDE)",time:"MDE course · required for all staff",
-  desc:"The Minnesota Department of Education's civil rights training for school staff — covering nondiscrimination and equal access requirements in schools. Work through all lessons in the module to complete it.",
-  url:"https://mdebrightontraining.com/courses/mde/mde-150/lessons/lesson-1/presentation/story.html",btn:"Start Civil Rights training"},
  {id:"aihc",name:"American Indian History & Culture (PELSB)",time:"PELSB license-renewal requirement",
   desc:"PELSB requires training in the history, cultural heritage, and contemporary contributions of American Indians for license renewal. This PELSB page lists the approved trainings and how to meet the requirement. Bultum's PD week uses the MDE Federal Indian Policy eLearning (Canvas enrollment code 4JR34P · 7 modules · 1.5 CEU).",
   url:"https://mn.gov/pelsb/current-educators/trainings/aihc/",btn:"Open PELSB AIHC trainings"}
@@ -1039,6 +1051,7 @@ function switchTeacherSub(sub){
   if(sub==='mission'){ renderMission(); }
   if(sub==='visionmission'){ renderVisionMission(); }
   if(sub==='directory'){ renderDirectory(); }
+  if(sub==='curriculum'){ renderCurriculum(); }
   if(sub==='calendar'){ renderCalendar(); }
   if(sub==='assessments'){ renderAssessments(); }
   if(sub==='mapping'){ renderMapping(); }
@@ -1135,7 +1148,9 @@ const CERT_COURSES = [
  {id:"dojo", title:"ClassDojo for Teachers", youtube:"3oOy5zwsWjo", minutes:"Tutorial",
   desc:"A walkthrough of ClassDojo — setting up your class, communicating with families, and tracking behavior and points."},
  {id:"jmc", title:"JMC Training", youtube:"EQzXmRm_cT4", minutes:"Tutorial",
-  desc:"JMC student information system. Focus only on these parts: attendance, using messages, grading with points and percentages, creating categories, creating assignments, and scoring student work."}
+  desc:"JMC student information system. Focus only on these parts: attendance, using messages, grading with points and percentages, creating categories, creating assignments, and scoring student work."},
+ {id:"mobymax", title:"MobyMax Training", youtube:"cFHg2lpfJUc", minutes:"Tutorial",
+  desc:"Getting started with MobyMax — placement tests, assigning lessons, and tracking student progress in math and reading."}
 ];
 let ytReady=false, ytLoading=false, certPlayer=null, certCourse=null;
 let certWatched=new Set(), certLast=0, certInterval=null, certDone=false, certPending=null;
@@ -2817,6 +2832,28 @@ function renderDirectory(){
       p.style.display=vis?'':'none';
     });
   });
+}
+
+const CURRICULUM=[{"name": "HMH — Into Math & Into Reading / Literature", "subj": "Core · Math & Literacy", "desc": "Our core math and literacy curriculum — Into Math and Into Reading / Literature.", "note": "Returning teachers: use your existing HMH access.", "cred": [["Username", "First initial + last name as one word — e.g. <b>Aregassa</b> for Abas Regassa"], ["Password", "<code>Bultum@22</code> — you can change it after signing in"]], "url": "https://www.hmhco.com/ui/login/?connection=xxxxxxxx&srsltid=afmboorfh9ccf48u7pwacrexcv3abwvsgwqayb3u2c1hxapenn0imbzz", "btn": "Open HMH login"}, {"name": "Core Knowledge Curriculum", "subj": "Science · Social Studies", "free": true, "desc": "Fully digital and free science and social studies curriculum.", "url": "https://www.coreknowledge.org/curriculum/", "btn": "Open Core Knowledge"}, {"name": "Mystery Science", "subj": "Science", "desc": "An additional science resource — hands-on, ready-to-teach science lessons.", "url": "https://mysteryscience.com/", "btn": "Open Mystery Science"}, {"name": "Generation Genius", "subj": "Math · Science", "desc": "Supplementary math and science video lessons and activities.", "cred": [["Username", "<code>bultumacademy</code>"], ["Password", "<code>Bultum@2022</code>"]], "url": "https://www.generationgenius.com/", "btn": "Open Generation Genius"}, {"name": "MobyMax", "subj": "Math · Reading & more", "desc": "Adaptive practice and intervention across subjects. A getting-started video is in Required Trainings → Video trainings.", "url": "https://www.mobymax.com/", "btn": "Open MobyMax"}];
+
+function renderCurriculum(){
+  const host=document.getElementById('sub-curriculum'); if(!host) return;
+  const cards=CURRICULUM.map(function(r){
+    const chip='<span class="res-chip">'+r.subj+'</span>';
+    let cred='';
+    if(r.cred){ cred='<div class="res-cred">'+r.cred.map(function(c){
+        return '<div class="cr"><span class="k">'+c[0]+'</span><span class="v">'+c[1]+'</span></div>';}).join('')+'</div>'; }
+    else if(r.free){ cred='<div class="res-cred" style="color:var(--evergreen);font-weight:600">Free · no login required</div>'; }
+    const note=r.note?'<p style="font-size:12px;color:var(--muted);margin-top:-2px">'+r.note+'</p>':'';
+    const href=r.url.replace(/&/g,'&amp;');
+    return '<div class="res-card"><div class="rh"><h4>'+r.name+'</h4>'+chip+'</div>'
+      +'<p>'+r.desc+'</p>'+cred+note
+      +'<a class="rbtn" href="'+href+'" target="_blank" rel="noopener">'+r.btn+' \u2197</a></div>';
+  }).join('');
+  host.innerHTML='<div class="panel-head" style="border:none;padding:0 0 4px"><h3>Curriculum Resources</h3>'
+    +'<span class="hint">Core &amp; supplementary programs</span></div>'
+    +'<div class="res-grid">'+cards+'</div>'
+    +'<p class="hint" style="margin-top:14px">Keep passwords private. If a login doesn\u2019t work, check with the office.</p>';
 }
 
 let missionLoaded=false;
