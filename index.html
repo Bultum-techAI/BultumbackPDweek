@@ -1457,19 +1457,14 @@ function clearQuarter(qid){
 /* resource-type helpers + completeness + pacing */
 function isPrintType(t){ return t==='HMH' || t==='Other print / textbook'; }
 function isOnlineType(t){ return t==='Online platform' || t==='Government / State resource'; }
-function itemComplete(it){
-  if(!it.resType || !it.align || !it.lessons) return false;
-  if(isPrintType(it.resType))  return !!(it.unit && it.chapter && it.pages);
-  if(isOnlineType(it.resType)) return !!(it.platform && it.location);
-  return !!it.location;
-}
+function itemComplete(it){ return (parseFloat(it.lessons)||0) > 0; }
 function quarterLessons(qid){ return (getPlan()[qid]||[]).reduce((n,it)=>n+(parseFloat(it.lessons)||0),0); }
 function paceRefresh(){
   QUARTERS.forEach(q=>{
     const used=quarterLessons(q.id), cap=q.days, over=used>cap;
     const bar=document.getElementById('pace-'+q.id), lbl=document.getElementById('pacelbl-'+q.id);
     if(bar){ bar.style.width=Math.min(100,cap?Math.round(used/cap*100):0)+'%'; bar.classList.toggle('over',over); }
-    if(lbl){ lbl.textContent=used+' / '+cap+' lessons'; lbl.classList.toggle('over',over); }
+    if(lbl){ lbl.textContent=used+' / '+cap+' days'; lbl.classList.toggle('over',over); }
   });
 }
 
@@ -1515,46 +1510,25 @@ function renderMapping(){
     const used = quarterLessons(q.id), cap = q.days, over = used>cap;
     const pct = Math.min(100, cap?Math.round(used/cap*100):0);
     const cards = items.map(it=>{
-      const online=isOnlineType(it.resType), print=isPrintType(it.resType), other=(it.resType && !online && !print);
+      const days=parseFloat(it.lessons)||0;
       const complete=itemComplete(it);
       return `
       <div class="q-item ${complete?'done':''}">
         <div class="qi-head"><span class="sc-code">${esc(it.code)}</span>
-          <span class="qi-badge ${complete?'ok':''}">${complete?'✓ Planned':'Needs plan'}</span>
+          <span class="qi-badge ${complete?'ok':''}">${complete?(days+' day'+(days===1?'':'s')):'Add days'}</span>
           <button class="qi-x" title="Remove" onclick="removeItem('${q.id}','${it.code}')">&times;</button></div>
         <div class="qi-text">${esc(it.text)}</div>
-        <details class="qi-details" ${complete?'':'open'}>
-          <summary>Resource plan &amp; pacing</summary>
-          <div class="qi-fields">
-            <label>Resource *<select onchange="setItemType('${q.id}','${it.code}',this.value)">
-              <option value="">— choose resource —</option>
-              ${RES_TYPES.map(t=>`<option value="${esc(t)}" ${t===it.resType?'selected':''}>${esc(t)}</option>`).join('')}
-            </select></label>
-            ${print?`<div class="qi-row3">
-              <label>Unit *<input value="${esc(it.unit)}" placeholder="Unit 4" oninput="updateItemField('${q.id}','${it.code}','unit',this.value)"></label>
-              <label>Chapter / lesson *<input value="${esc(it.chapter)}" placeholder="Ch 4 · L4.2" oninput="updateItemField('${q.id}','${it.code}','chapter',this.value)"></label>
-              <label>Page range *<input value="${esc(it.pages)}" placeholder="pp. 210–232" oninput="updateItemField('${q.id}','${it.code}','pages',this.value)"></label>
-            </div>`:''}
-            ${online?`<div class="qi-row2">
-              <label>Platform name *<input value="${esc(it.platform)}" placeholder="HMH Ed · MobyMax · MDE" oninput="updateItemField('${q.id}','${it.code}','platform',this.value)"></label>
-              <label>Exact unit / lesson *<input value="${esc(it.location)}" placeholder="Unit 3 › Lesson 2" oninput="updateItemField('${q.id}','${it.code}','location',this.value)"></label>
-            </div>`:''}
-            ${other?`<label>Where it lives *<input value="${esc(it.location)}" placeholder="Describe the resource and where to find it" oninput="updateItemField('${q.id}','${it.code}','location',this.value)"></label>`:''}
-            <label>How this resource meets the standard *<textarea rows="2" placeholder="What students do, and why it hits this benchmark…" oninput="updateItemField('${q.id}','${it.code}','align',this.value)">${esc(it.align)}</textarea></label>
-            <div class="qi-row2">
-              <label>Est. lessons *<input type="number" min="0" step="1" value="${esc(it.lessons)}" placeholder="e.g. 3" oninput="updateItemField('${q.id}','${it.code}','lessons',this.value); paceRefresh()"></label>
-              <label>Link<input type="url" value="${esc(it.link)}" placeholder="https://…" oninput="updateItemField('${q.id}','${it.code}','link',this.value)"></label>
-            </div>
-            <label>Notes<textarea rows="2" placeholder="Groupings, assessment, differentiation…" oninput="updateItemField('${q.id}','${it.code}','notes',this.value)">${esc(it.notes)}</textarea></label>
-          </div>
-        </details>
+        <div class="qi-fields">
+          <label>Est. days this lesson will take<input type="number" min="0" step="1" value="${esc(it.lessons)}" placeholder="e.g. 3" oninput="updateItemField('${q.id}','${it.code}','lessons',this.value); paceRefresh()"></label>
+          <label>Notes<textarea rows="2" placeholder="Groupings, assessment, differentiation\u2026" oninput="updateItemField('${q.id}','${it.code}','notes',this.value)">${esc(it.notes)}</textarea></label>
+        </div>
       </div>`;
     }).join('') || `<div class="q-empty">Drag standards here, or use the Q buttons in the library.</div>`;
     return `<div class="q-col" ondragover="onDragOver(event)" ondragenter="onDragEnter(event)" ondragleave="onDragLeave(event)" ondrop="onDropQuarter(event,'${q.id}')">
       <div class="q-head"><div><b>${q.label}</b><span class="q-range">${q.range}</span></div>
         <span class="q-count">${items.length}</span></div>
       <div class="q-pace">
-        <div class="q-pace-lbl"><span>~${q.weeks} teaching weeks · ${q.days} days</span><span id="pacelbl-${q.id}" class="${over?'over':''}">${used} / ${cap} lessons</span></div>
+        <div class="q-pace-lbl"><span>~${q.weeks} teaching weeks · ${q.days} days</span><span id="pacelbl-${q.id}" class="${over?'over':''}">${used} / ${cap} days</span></div>
         <div class="q-bar"><div class="q-bar-fill ${over?'over':''}" id="pace-${q.id}" style="width:${pct}%"></div></div>
         <div class="q-out">Out: ${q.out}</div>
       </div>
@@ -1565,13 +1539,13 @@ function renderMapping(){
 
   host.innerHTML = `
     <div class="callout" style="margin-bottom:16px"><div class="ci"><svg viewBox="0 0 24 24"><path d="M9 18l6-3 6 3V6l-6-3-6 3-6-3v12l6 3z"/><path d="M9 3v15M15 6v15"/></svg></div>
-      <div><h4>Curriculum Mapping Kickoff</h4><p>Place each Minnesota standard into the quarter you'll teach it, then commit to a plan: pick the resource (HMH, another textbook, an online platform, or a state/MDE resource), name the <b>exact</b> unit, chapter, and page range — or platform and lesson — say <b>how it meets the standard</b>, and estimate the <b>lessons</b> it takes. Each quarter shows the teaching weeks it actually has (from the Bultum calendar), so your lesson total stays realistic. <b>Auto-spread</b> gives a guided first draft. Everything saves${cloudOn()?' to the cloud under your name':' automatically'}.</p></div></div>
+      <div><h4>Curriculum Mapping Kickoff</h4><p>Drag each Minnesota standard into the quarter you'll teach it (or tap a <b>Q</b> button). For each one, just add optional <b>notes</b> and estimate the <b>number of days</b> the lesson will take. Each quarter shows the teaching weeks it actually has (from the Bultum calendar), so your day total stays realistic. <b>Auto-spread</b> gives a guided first draft. Everything saves${cloudOn()?' to the cloud under your name':' automatically'}.</p></div></div>
 
     <div class="map-controls">
       <label class="mc-field">Grade<select onchange="setMapGrade(this.value)">${gradeOpts}</select></label>
       <label class="mc-field">Subject<select onchange="setMapSubject(this.value)">${subjOpts}</select></label>
       <div class="mc-spacer"></div>
-      <div class="mc-meta">${stds.length} standards · ${totalPlaced} placed · ${totalLessons}/${totalCap} lessons planned</div>
+      <div class="mc-meta">${stds.length} standards · ${totalPlaced} placed · ${totalLessons}/${totalCap} days planned</div>
       <button class="mc-pdf" onclick="exportPlanPDF()">Download plan as PDF</button>
     </div>
 
