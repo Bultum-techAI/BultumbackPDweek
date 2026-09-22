@@ -3189,13 +3189,15 @@ function renderTransportation(){
   transportLoaded=true;
 }
 const FALLDATA_URL="https://bultum-techai.github.io/BultumbackPDweek/";
-let fallDataLoaded=false;
 function renderFallData(){
   var host=document.getElementById("sub-falldata"); if(!host) return;
-  if(fallDataLoaded) return;
-  host.innerHTML='<div class="embed-bar"><a class="embed-btn" href="'+FALLDATA_URL+'" target="_blank" rel="noopener">Open online \u2197</a></div>'
-    +'<div class="mission-frame-wrap"><iframe id="fallDataFrame" title="Fall Data Review" src="'+FALLDATA_URL+'" allow="fullscreen; clipboard-write"></iframe></div>';
-  fallDataLoaded=true;
+  host.innerHTML='<div class="panel-head" style="border:none;padding:0 0 12px"><h3>Fall Data Review</h3><span class="hint">Every Student Data Review</span></div>'
+    +'<div class="jmc-card">'
+    +'<div class="jmc-ic"><svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 14l3-3 3 3 5-6"/></svg></div>'
+    +'<h4>Every Student Data Review</h4>'
+    +'<p>Review each student\u2019s fall assessment data. Opens in a new tab.</p>'
+    +'<a class="embed-btn" href="'+FALLDATA_URL+'" target="_blank" rel="noopener">Open Fall Data Review \u2197</a>'
+    +'</div>';
 }
 let missionLoaded=false;
 function renderMission(){
